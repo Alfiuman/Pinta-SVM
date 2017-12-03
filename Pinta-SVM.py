@@ -104,9 +104,7 @@ class Svm:
         self.dataFrame2.drop(self.dataFrame2.columns[[0]], 1, inplace = True)
         self.dataToClass = self.dataFrame2.astype(float).values.tolist()
         
-        classification = self.supVecMach.predict(self.dataToClass)
-        
-        return classification
+        return self.supVecMach.predict(self.dataToClass)
 
     #Exporting the model using pickle.
     def exportModel(self, nameFile = "svcTrained.pkl"):
