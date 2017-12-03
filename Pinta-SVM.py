@@ -1,5 +1,6 @@
 
 import pandas as pd
+import numpy as np
 import random 
 import itertools
 import copy
@@ -76,23 +77,23 @@ class Svm:
     def testing(self):
         
         if self.trainAndTest == 1:
-            self.classifTest = self.supVecMach.predict(self.testDataX)
-            self.testCheck = [None]*len(self.classifTest)
-            self.corr = 0
+            classifTest = self.supVecMach.predict(self.testDataX)
+            testCheck = [None]*len(classifTest)
+            corr = 0
             
-            for i in range(len(self.classifTest)):
-                if self.classifTest[i] == self.testDataY[i]:
-                    self.testCheck[i] = 1
-                    self.corr += 1
+            for i in range(len(classifTest)):
+                if classifTest[i] == self.testDataY[i]:
+                    testCheck[i] = 1
+                    corr += 1
                 else:
-                    self.testCheck[i] = 0
+                    testCheck[i] = 0
             
-            self.percCorr = self.corr / len(self.classifTest)
+            percCorr = corr / len(classifTest)
             
-            return self.testCheck, self.percCorr
+            return classifTest, testCheck, percCorr
         else:
             print("You haven't specified data for testing.")
-            return 0, 0
+            return np.ndarray([0]), [0], 0
     
     #Classifying data.
     def classify(self, classiFile):
@@ -103,9 +104,9 @@ class Svm:
         self.dataFrame2.drop(self.dataFrame2.columns[[0]], 1, inplace = True)
         self.dataToClass = self.dataFrame2.astype(float).values.tolist()
         
-        self.classification = self.supVecMach.predict(self.dataToClass)
+        classification = self.supVecMach.predict(self.dataToClass)
         
-        return self.classification
+        return classification
 
     #Exporting the model using pickle.
     def exportModel(self, nameFile = "svcTrained.pkl"):
@@ -125,7 +126,8 @@ a.training()
 testResults = a.testing()
 
 print(testResults[0])
-print("Correct percentage: ", testResults[1] * 100, "%", sep = "")
+print(testResults[1])
+print("Correct percentage: ", testResults[2] * 100, "%", sep = "")
 
 print(a.classify("ToClassProva.txt"))
 
